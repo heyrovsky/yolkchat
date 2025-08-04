@@ -68,7 +68,7 @@ func PaintUi() error {
 		width := window.Canvas().Size().Width
 		if width > 800 {
 			window.SetContent(container.NewPadded(BuildSplitView(
-				BuildChatList(window, &allChats, func(chat schema.UserList) {
+				BuildChatList(&allChats, func(chat schema.UserList) {
 					selectedChat = &chat
 					currentView = 2
 					updateContent()
@@ -86,7 +86,7 @@ func PaintUi() error {
 
 		switch currentView {
 		case 1:
-			window.SetContent(BuildChatList(window, &allChats, func(chat schema.UserList) {
+			window.SetContent(BuildChatList(&allChats, func(chat schema.UserList) {
 				selectedChat = &chat
 				currentView = 2
 				updateContent()

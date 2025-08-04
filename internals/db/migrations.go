@@ -1,13 +1,8 @@
 package db
 
-import (
-	"github.com/heyrovsky/yolkchat/pkg/schema"
-	"github.com/heyrovsky/yolkchat/pkg/users"
-)
+import "github.com/heyrovsky/yolkchat/pkg/schema"
 
-var (
-	UserService users.Interface
-)
+var ()
 
 func Init(path string) error {
 	db, err := GetDbInstance(path)
@@ -15,9 +10,6 @@ func Init(path string) error {
 		return err
 	}
 	db.AutoMigrate(&schema.UserList{}, &schema.ChatMessage{})
-
-	userRepo := users.NewRepository(db)
-	UserService = users.NewService(userRepo)
 
 	return nil
 }
