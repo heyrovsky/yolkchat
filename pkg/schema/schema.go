@@ -2,23 +2,22 @@ package schema
 
 import (
 	"time"
+
+	"gorm.io/datatypes"
 )
 
 type UserList struct {
-	Name     string
-	LastSeen time.Time
-	Online   bool
-}
-type ChatSchema struct {
-	Received  bool
-	Type      string // "text", "video", "image", "file"
-	Content   string // if text, then the string; else path (file://)
-	Timestamp time.Time
+	Name     string        `gorm:"primaryKey;column:name;size:100;not null"`
+	LastSeen time.Time     `gorm:"column:last_seen;not null"`
+	Online   bool          `gorm:"column:online;not null"`
+	Messages []ChatMessage `gorm:"foreignKey:UserName;references:Name"`
 }
 
 type ChatMessage struct {
-	Ingress       bool
-	Text          string
-	Attatchements []string
-	Timestamp     time.Time
+	ID          uint                        `gorm:"primaryKey;autoIncrement;column:id"`
+	UserName    string                      `gorm:"column:user_name;size:100;not null;index"`
+	Ingress     bool                        `gorm:"column:ingress;not null"`
+	Text        string                      `gorm:"column:text;type:text;not null"`
+	Attachments datatypes.JSONSlice[string] `gorm:"column:attachments;type:json"`
+	Timestamp   time.Time                   `gorm:"column:timestamp;not null"`
 }

@@ -90,10 +90,10 @@ func BuildChatWindow(chat *schema.UserList, w fyne.Window, messages []schema.Cha
 	sendBtn = widget.NewButtonWithIcon("", theme.MailSendIcon(), func() {
 		if chat != nil && (messageEntry.Text != "" || len(attachedFiles) > 0) {
 			sendFunc(chat.Name, schema.ChatMessage{
-				Ingress:       false,
-				Text:          messageEntry.Text,
-				Attatchements: attachedFiles,
-				Timestamp:     time.Now(),
+				Ingress:     false,
+				Text:        messageEntry.Text,
+				Attachments: attachedFiles,
+				Timestamp:   time.Now(),
 			})
 
 			messageEntry.SetText("")
@@ -105,6 +105,7 @@ func BuildChatWindow(chat *schema.UserList, w fyne.Window, messages []schema.Cha
 	clearBtn := widget.NewButtonWithIcon("", theme.CancelIcon(), func() {
 		messageEntry.SetText("")
 		attachedFiles = []string{}
+		updateSendBtnLabel()
 	})
 
 	attachBtn.Importance = widget.LowImportance
@@ -139,7 +140,7 @@ func openFileInExplorer(path string) {
 func buildMessageBubble(msg schema.ChatMessage, maxWidth float32) fyne.CanvasObject {
 	var elements []fyne.CanvasObject
 
-	for _, file := range msg.Attatchements {
+	for _, file := range msg.Attachments {
 		displayName := strings.TrimSpace(file)
 		btn := widget.NewButtonWithIcon(displayName, theme.DocumentIcon(), func(f string) func() {
 			return func() {

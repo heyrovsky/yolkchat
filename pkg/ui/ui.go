@@ -9,13 +9,20 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"github.com/heyrovsky/yolkchat/internals/config"
+	"github.com/heyrovsky/yolkchat/internals/db"
 	"github.com/heyrovsky/yolkchat/pkg/schema"
 )
 
 func PaintUi() error {
-	canvas := app.New()
+	canvas := app.NewWithID(config.APPID)
 	canvas.Settings().SetTheme(noScrollBarTheme{Theme: theme.DefaultTheme()})
 	window := canvas.NewWindow(config.APPNAME)
+
+	storage_path := canvas.Storage().RootURI().Path()
+	fmt.Println(storage_path)
+	if err := db.Init(storage_path); err != nil {
+		return err
+	}
 
 	if fyne.CurrentDevice().IsMobile() {
 		window.SetFullScreen(true)
@@ -35,22 +42,22 @@ func PaintUi() error {
 	messages := []schema.ChatMessage{
 		{Ingress: true, Text: "Hey there!", Timestamp: time.Now().Add(-10 * time.Minute)},
 		{Ingress: false, Text: "Hello Alice!", Timestamp: time.Now().Add(-8 * time.Minute)},
-		{Ingress: false, Text: "Hey test", Attatchements: []string{"/Users/syam/Downloads/genesis.json", "/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
+		{Ingress: false, Text: "Hey test", Attachments: []string{"/Users/syam/Downloads/genesis.json", "/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
 		{Ingress: true, Text: "Hey there!", Timestamp: time.Now().Add(-10 * time.Minute)},
 		{Ingress: false, Text: "Hello Alice!", Timestamp: time.Now().Add(-8 * time.Minute)},
-		{Ingress: true, Attatchements: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
+		{Ingress: true, Attachments: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
 		{Ingress: true, Text: "Hey there!", Timestamp: time.Now().Add(-10 * time.Minute)},
 		{Ingress: false, Text: "Hello Alice!", Timestamp: time.Now().Add(-8 * time.Minute)},
-		{Ingress: true, Attatchements: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
+		{Ingress: true, Attachments: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
 		{Ingress: true, Text: "Hey there!", Timestamp: time.Now().Add(-10 * time.Minute)},
 		{Ingress: false, Text: "Hello Alice!", Timestamp: time.Now().Add(-8 * time.Minute)},
-		{Ingress: true, Attatchements: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
+		{Ingress: true, Attachments: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
 		{Ingress: true, Text: "Hey there!", Timestamp: time.Now().Add(-10 * time.Minute)},
 		{Ingress: false, Text: "Hello Alice!", Timestamp: time.Now().Add(-8 * time.Minute)},
-		{Ingress: true, Attatchements: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
+		{Ingress: true, Attachments: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
 		{Ingress: true, Text: "Hey there!", Timestamp: time.Now().Add(-10 * time.Minute)},
 		{Ingress: false, Text: "Hello Alice!", Timestamp: time.Now().Add(-8 * time.Minute)},
-		{Ingress: true, Attatchements: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
+		{Ingress: true, Attachments: []string{"/Users/syam/Downloads/genesis.json"}, Timestamp: time.Now().Add(-5 * time.Minute)},
 	}
 
 	splitRatio := 0.3
